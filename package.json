@@ -1,0 +1,16 @@
+{
+  "name": "api-filmaffity",
+  "version": "1.0.0",
+  "description": "API Filmafinnity",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Jose Luis Pitarch",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.17.1",
+    "puppeteer": "^10.4.0",
+    "request": "^2.88.2"
+  }
+}
