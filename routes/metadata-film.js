@@ -71,7 +71,7 @@ router.get('/', async function(req, res) {
             } 
         } else {
             response = {
-                'message': 'Los datos de esta película son incompatibles con la API'
+                'message': 'This film is not compatible with the skeleton of Filmaffinity information of films'
             }
         }
         
@@ -79,10 +79,8 @@ router.get('/', async function(req, res) {
     });
 
     await browser.close();
-    
-    res.json(JSON.stringify(film))
-    
 
+    res.json(film)
 });
 
 module.exports = router;
