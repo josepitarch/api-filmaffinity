@@ -1,13 +1,18 @@
-const { response } = require('express');
 const express = require('express')
 const router = express.Router();
 const puppeteer = require('puppeteer');
 
 router.get('/', async function(req, res) {
     const id = req.query.id
-   
-    const browser = await puppeteer.launch()
+    response = await metadataFilm(id)
+    res.json(response)
+});
+
+async function metadataFilm(id) {
+    const browser = await puppeteer.launch({headless: false})
     const page = await browser.newPage()
+
+    console.log('Mensaje de prueba');
 
     await page.goto(`https://filmaffinity.com/es/film${id}.html`)
 
@@ -17,14 +22,15 @@ router.get('/', async function(req, res) {
         const average = document.querySelector('div#movie-rat-avg')
         const justwatch = document.querySelector("#stream-wrapper .body")
         const reviews = document.querySelectorAll('#pro-reviews > li > div')
+        
         if (query.length == 12) {
             response = {
                 'title': title.innerText,
-                'year' : query[1].innerText,
+                'year': query[1].innerText,
                 'duration': query[2].innerText,
                 'country': query[3].innerText,
                 'directors': query[4].innerText,
-                'script' : query[5].innerText,
+                'script': query[5].innerText,
                 'music': query[6].innerText,
                 'photography': query[7].innerText,
                 'casting': query[8].innerText,
@@ -36,11 +42,11 @@ router.get('/', async function(req, res) {
                 'reviews': []
             }
 
-            if(justwatch != undefined) {
+            if (justwatch != undefined) {
                 const subtitles = justwatch.querySelectorAll(".sub-title")
-                for(subtitle of subtitles) {
+                for (subtitle of subtitles) {
                     let platforms = []
-                    for(platform of subtitle.nextElementSibling.children) {
+                    for (platform of subtitle.nextElementSibling.children) {
                         element = platform.firstElementChild.firstElementChild
                         platforms.push({
                             'name': element.alt,
@@ -51,36 +57,36 @@ router.get('/', async function(req, res) {
                 }
             }
 
-            if(reviews != undefined) {
+            if (reviews != undefined) {
                 let aux = []
-                for(review of reviews) {
+                for (review of reviews) {
 
-                    if(review.firstElementChild.localName === 'div') {
+                    if (review.firstElementChild.localName === 'div') {
                         body = review.firstElementChild.innerText
                     } else {
                         body = review.firstElementChild.firstElementChild.innerText
                     }
-                    
+
                     response['reviews'].push({
-                        'reference' : review.firstElementChild.href,
-                        'body' : body,
-                        'author' : review.lastElementChild.innerText.trim(),
-                        'inclination' : review.lastElementChild.lastElementChild.attributes.alt.value
+                        'reference': review.firstElementChild.href,
+                        'body': body,
+                        'author': review.lastElementChild.innerText.trim(),
+                        'inclination': review.lastElementChild.lastElementChild.attributes.alt.value
                     })
                 }
-            } 
+            }
         } else {
             response = {
                 'message': 'This film is not compatible with the skeleton of Filmaffinity information of films'
             }
         }
-        
+
         return response
     });
 
-    await browser.close();
+    await browser.close()
 
-    res.json(film)
-});
+    return film
+}
 
-module.exports = router;
+module.exports = { router, metadataFilm }

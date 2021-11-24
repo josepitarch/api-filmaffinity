@@ -1,6 +1,7 @@
 const express = require('express')
 const router = express.Router();
 const puppeteer = require('puppeteer');
+const { metadataFilm } = require('./metadata-film')
 
 router.get('/', async function(req, res) {
     try {
@@ -17,7 +18,7 @@ router.get('/', async function(req, res) {
             const films = document.querySelectorAll('.movie-card')
 
             let i = 0
-            for(film of films) {
+            for (film of films) {
                 const poster = film.firstElementChild.firstElementChild
                 const container = film.children[1]
 
@@ -33,20 +34,26 @@ router.get('/', async function(req, res) {
                 });
                 i++
             }
+            
+            if(i === 0) {
+                const id = document.URL.substring(document.URL.search('/film') + 5, document.URL.search('.html'))
+                console.log(id);
+                response = metadataFilm(id)
+            }
 
             return response
         });
 
         res.json(search)
-        
+
     } catch (err) {
-        if(err instanceof TypeError)  {
+        if (err instanceof TypeError) {
             res.json({
                 'message': 'No se ha pasado el parámetro film',
                 'error': err.message
             })
         }
-    } 
+    }
 });
 
 module.exports = router;
