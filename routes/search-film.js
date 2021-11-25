@@ -12,7 +12,7 @@ router.get('/', async function(req, res) {
 
         await page.goto(`https://www.filmaffinity.com/es/search.php?stext=${name}`)
 
-        const search = await page.evaluate(() => {
+        let search = await page.evaluate(async() => {
             response = []
             const years = document.querySelectorAll('.ye-w')
             const films = document.querySelectorAll('.movie-card')
@@ -36,7 +36,12 @@ router.get('/', async function(req, res) {
             }
 
             return response
+
         });
+
+        if (search.length === 0) {
+            search = await metadataFilm(425311)
+        }
 
         res.json(search)
 
