@@ -44,6 +44,12 @@ router.get('/', async function(req, res) {
             return response
         });
 
+        if (search.length === 0) {
+            search = await metadataFilm(425311)
+        }
+
+        res.json(search)
+
         res.json(search)
 
     } catch (err) {

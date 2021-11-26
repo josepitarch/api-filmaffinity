@@ -50,8 +50,4 @@ router.get('/', async function(req, res) {
     res.json(homepage)
 });
 
-async function prueba() {
-    return 'Hola'
-}
-
 module.exports = {router, prueba};
