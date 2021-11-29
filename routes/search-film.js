@@ -1,3 +1,4 @@
+const { response } = require('express');
 const express = require('express')
 const router = express.Router();
 const puppeteer = require('puppeteer');
@@ -34,19 +35,17 @@ router.get('/', async function(req, res) {
                 });
                 i++
             }
-            
-            if(i === 0) {
-                const id = document.URL.substring(document.URL.search('/film') + 5, document.URL.search('.html'))
-                console.log(id);
-                response = metadataFilm(id)
+
+            if(response.length === 0) {
+                response = document.URL.substring(document.URL.search('/film') + 5, document.URL.search('.html'))
             }
 
             return response
 
         });
 
-        if (search.length === 0) {
-            search = await metadataFilm(425311)
+        if(typeof(search) === 'string') {
+            search = await metadataFilm(search)
         }
 
         res.json(search)
@@ -54,11 +53,11 @@ router.get('/', async function(req, res) {
     } catch (err) {
         if (err instanceof TypeError) {
             res.json({
-                'message': 'No se ha pasado el parámetro film',
+                'message': 'Bad Request: the id parameter has not been passed',
                 'error': err.message
             })
         }
     }
 });
 
-module.exports = router;
+module.exports = router

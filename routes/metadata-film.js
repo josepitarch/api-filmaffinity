@@ -9,10 +9,8 @@ router.get('/', async function(req, res) {
 });
 
 async function metadataFilm(id) {
-    const browser = await puppeteer.launch({headless: false})
+    const browser = await puppeteer.launch()
     const page = await browser.newPage()
-
-    console.log('Mensaje de prueba');
 
     await page.goto(`https://filmaffinity.com/es/film${id}.html`)
 
