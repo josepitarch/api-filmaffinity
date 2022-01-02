@@ -34,7 +34,9 @@ async function metadataFilm(id) {
                 'casting': query[8].innerText,
                 'producer': query[9].innerText,
                 'genres': query[10].innerText,
-                'description': query[11].innerText.search('(FILMAFFINITY)') == -1 ? query[11].innerText : query[11].innerText.substring(0, query[11].innerText.indexOf(' (FILMAFFINITY)')),
+                'description': query[11].innerText.search('(FILMAFFINITY)') == -1
+                ? query[11].innerText
+                : query[11].innerText.substring(0, query[11].innerText.indexOf(' (FILMAFFINITY)')),
                 'average': average.innerText,
                 'justwatch': {},
                 'reviews': []
@@ -45,10 +47,9 @@ async function metadataFilm(id) {
                 for (subtitle of subtitles) {
                     let platforms = []
                     for (platform of subtitle.nextElementSibling.children) {
-                        element = platform.firstElementChild.firstElementChild
                         platforms.push({
-                            'name': element.alt,
-                            'url': element.src
+                            'name': platform.firstElementChild.firstElementChild.alt,
+                            'url': platform.href
                         })
                     }
                     response['justwatch'][subtitle.innerText] = platforms

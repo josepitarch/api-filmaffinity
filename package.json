@@ -9,7 +9,8 @@
     "author": "Jose Luis Pitarch",
     "license": "ISC",
     "dependencies": {
+        "dotenv": "^10.0.0",
         "express": "^4.17.1",
         "puppeteer": "^10.4.0"
-    }  
+    }
 }

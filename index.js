@@ -1,5 +1,6 @@
 const express = require('express')
 const app = express()
+require('dotenv').config()
 
 var cinemaListing = require('./routes/cinema-listing')
 var searchFilm = require('./routes/search-film')
