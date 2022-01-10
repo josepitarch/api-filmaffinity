@@ -3,15 +3,17 @@ const express = require('express')
 const router = express.Router();
 const puppeteer = require('puppeteer');
 const { metadataFilm } = require('./metadata-film')
+require('dotenv').config()
 
 router.get('/', async function(req, res) {
     try {
+        const language = req.query.lan || process.env.DEFAULT_LANGUAGE
         const name = req.query.film.replace(" ", "+")
 
         const browser = await puppeteer.launch()
         const page = await browser.newPage()
 
-        await page.goto(`https://www.filmaffinity.com/es/search.php?stext=${name}`)
+        await page.goto(`https://www.filmaffinity.com/${language}/search.php?stext=${name}`)
 
         let search = await page.evaluate(async() => {
             response = []
@@ -45,7 +47,7 @@ router.get('/', async function(req, res) {
         });
 
         if(typeof(search) === 'string') {
-            search = await metadataFilm(search)
+            search = await metadataFilm(search, language)
         }
 
         res.json(search)

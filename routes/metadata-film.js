@@ -1,18 +1,20 @@
 const express = require('express')
 const router = express.Router();
 const puppeteer = require('puppeteer');
+require('dotenv').config()
 
 router.get('/', async function(req, res) {
+    const language = req.query.lan || process.env.DEFAULT_LANGUAGE
     const id = req.query.id
-    response = await metadataFilm(id)
+    response = await metadataFilm(id, language)
     res.json(response)
 });
 
-async function metadataFilm(id) {
+async function metadataFilm(id, language) {
     const browser = await puppeteer.launch()
     const page = await browser.newPage()
 
-    await page.goto(`https://filmaffinity.com/es/film${id}.html`)
+    await page.goto(`https://filmaffinity.com/${language}/film${id}.html`)
 
     const film = await page.evaluate(() => {
         const title = document.querySelector('h1#main-title')

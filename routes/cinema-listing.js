@@ -1,13 +1,16 @@
 const express = require('express')
 const router = express.Router();
 const puppeteer = require('puppeteer');
+require('dotenv').config()
 
 router.get('/', async function(req, res) {
+
+    const language = req.query.lan || process.env.DEFAULT_LANGUAGE
     
     const browser = await puppeteer.launch()
     const page = await browser.newPage()
 
-    await page.goto('https://filmaffinity.com')
+    await page.goto(`https://www.filmaffinity.com/${language}/main.html`)
 
     const homepage = await page.evaluate(() => {
         response = []
