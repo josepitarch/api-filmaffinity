@@ -12,9 +12,9 @@ app.use('/api/search/film', searchFilm)
 app.use('/api/metadata/film', router)
 
 app.get('/', function(req, res) {
-    res.send('API of famous Filmaffinity web')
+    res.send('API of famous Filmaffinity Web')
 });
 
 app.listen(process.env.PORT, () => {
-    console.log(`API of famous Filmaffinity web. Listen on the port ${process.env.PORT}`)
+    console.log(`API of famous Filmaffinity Web. Listen on the port ${process.env.PORT}`)
 })

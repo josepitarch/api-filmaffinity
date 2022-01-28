@@ -4,6 +4,7 @@ const puppeteer = require('puppeteer');
 const { DEFAULT_LANGUAGE } = require('../constants');
 
 router.get('/', async function(req, res) {
+    const language = req.query.lang ?? DEFAULT_LANGUAGE
     const id = req.query.id
     if(id === undefined) res.json({'error': 'endpoint needs an id of some movie'})
     else {

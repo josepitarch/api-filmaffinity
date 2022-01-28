@@ -4,9 +4,11 @@ const router = express.Router();
 const puppeteer = require('puppeteer');
 const { DEFAULT_LANGUAGE } = require('../constants');
 const { metadataFilm } = require('./metadata-film')
+require('dotenv').config()
 
 router.get('/', async function(req, res) {
     try {
+        const language = req.query.lan || process.env.DEFAULT_LANGUAGE
         const name = req.query.film.replace(" ", "+")
         const lang = req.query.lang ?? DEFAULT_LANGUAGE
 
@@ -47,7 +49,7 @@ router.get('/', async function(req, res) {
         });
 
         if(typeof(search) === 'string') {
-            search = await metadataFilm(search)
+            search = await metadataFilm(search, language)
         }
 
         res.json(search)

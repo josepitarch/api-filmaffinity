@@ -10,7 +10,7 @@ router.get('/', async function(req, res) {
     const page = await browser.newPage()
 
     await page.goto(`https://www.filmaffinity.com/${lang}/main.html`)
-
+    
     const homepage = await page.evaluate(() => {
         response = []
         const query = document.querySelectorAll('.home-cat-container .home-cat-container')
