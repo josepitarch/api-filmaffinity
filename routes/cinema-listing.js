@@ -1,13 +1,15 @@
 const express = require('express')
 const router = express.Router();
 const puppeteer = require('puppeteer');
+const { DEFAULT_LANGUAGE } = require('../constants');
 
 router.get('/', async function(req, res) {
+    const lang = req.query.lang ?? DEFAULT_LANGUAGE
     
     const browser = await puppeteer.launch()
     const page = await browser.newPage()
 
-    await page.goto('https://filmaffinity.com')
+    await page.goto(`https://www.filmaffinity.com/${lang}/main.html`)
 
     const homepage = await page.evaluate(() => {
         response = []

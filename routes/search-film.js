@@ -2,16 +2,18 @@ const { response } = require('express');
 const express = require('express')
 const router = express.Router();
 const puppeteer = require('puppeteer');
+const { DEFAULT_LANGUAGE } = require('../constants');
 const { metadataFilm } = require('./metadata-film')
 
 router.get('/', async function(req, res) {
     try {
         const name = req.query.film.replace(" ", "+")
+        const lang = req.query.lang ?? DEFAULT_LANGUAGE
 
         const browser = await puppeteer.launch()
         const page = await browser.newPage()
 
-        await page.goto(`https://www.filmaffinity.com/es/search.php?stext=${name}`)
+        await page.goto(`https://www.filmaffinity.com/${lang}/search.php?stext=${name}`)
 
         let search = await page.evaluate(async() => {
             response = []
