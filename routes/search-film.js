@@ -4,11 +4,9 @@ const router = express.Router();
 const puppeteer = require('puppeteer');
 const { DEFAULT_LANGUAGE } = require('../constants');
 const { metadataFilm } = require('./metadata-film')
-require('dotenv').config()
 
 router.get('/', async function(req, res) {
     try {
-        const language = req.query.lan || process.env.DEFAULT_LANGUAGE
         const name = req.query.film.replace(" ", "+")
         const lang = req.query.lang ?? DEFAULT_LANGUAGE
 
@@ -17,7 +15,7 @@ router.get('/', async function(req, res) {
 
         await page.goto(`https://www.filmaffinity.com/${lang}/search.php?stext=${name}`)
 
-        let search = await page.evaluate(async() => {
+        let search = await page.evaluate(async () => {
             response = []
             const years = document.querySelectorAll('.ye-w')
             const films = document.querySelectorAll('.movie-card')
@@ -40,16 +38,17 @@ router.get('/', async function(req, res) {
                 i++
             }
 
-            if(response.length === 0) {
-                response = document.URL.substring(document.URL.search('/film') + 5, document.URL.search('.html'))
-            }
+            return response.length === 0
+            ? document.URL.substring(document.URL.search('/film') + 5, document.URL.search('.html'))
+            : response
 
-            return response
 
         });
 
+        await browser.close()
+
         if(typeof(search) === 'string') {
-            search = await metadataFilm(search, language)
+            search = await metadataFilm(search, lang)
         }
 
         res.json(search)

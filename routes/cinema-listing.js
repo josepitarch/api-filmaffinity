@@ -49,6 +49,8 @@ router.get('/', async function(req, res) {
         return response  
     });
 
+    await browser.close()
+
     res.json(homepage)
 });
 
