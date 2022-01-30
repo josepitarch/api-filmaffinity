@@ -15,16 +15,14 @@ router.get('/', async function(req, res) {
         response = []
         const query = document.querySelectorAll('.home-cat-container .home-cat-container')
 
-        for(let i = 0; i < query.length; i++) {
-            const section = query[i]
+        for(section of query) {
             const titleSection = section.firstElementChild.firstElementChild.innerHTML
-            const items = section.lastElementChild.children
+            const items = section.querySelectorAll('.padding-movie-catrd')
             films = []
 
             for(item of items) {
                 reference = item.firstElementChild.firstElementChild.href
-                aux = item.firstElementChild.firstElementChild.outerHTML
-                image = aux.substring(aux.search('src') + 5, aux.search('data-src') - 2)
+                image = item.querySelector('img').dataset.src
                 aux = item.innerText.split('\n')
                 titleFilm = aux[0]
                 premiereDay = aux[1]
