@@ -29,6 +29,7 @@ router.get('/', async function(req, res) {
 
                 if(reference != null) {
                     films.push({
+                        'id': reference.substring(reference.search('/film') + 5, reference.search('.html')),
                         'reference': reference,
                         'image': image,
                         'title': titleFilm,

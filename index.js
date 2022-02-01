@@ -2,12 +2,12 @@ const express = require('express')
 const app = express()
 require('dotenv').config()
 
-var cinemaListing = require('./routes/cinema-listing')
+var homepage = require('./routes/homepage')
 var searchFilm = require('./routes/search-film')
 var { router } = require('./routes/metadata-film')
 
 
-app.use('/api/cinema/listing', cinemaListing)
+app.use('/api/homepage', homepage)
 app.use('/api/search/film', searchFilm)
 app.use('/api/metadata/film', router)
 

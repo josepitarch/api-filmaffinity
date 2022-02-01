@@ -59,7 +59,8 @@ async function metadataFilm(id, lang) {
                             'url': platform.href
                         })
                     }
-                    response['justwatch'][subtitle.innerText] = platforms
+                    response['justwatch'][subtitle.innerText.toLowerCase()
+                        .normalize("NFD").replace(/[\u0300-\u036f]/g, "")] = platforms
                 }
             }
 
