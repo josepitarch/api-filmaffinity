@@ -24,7 +24,7 @@ async function metadataFilm(id, lang) {
     const film = await page.evaluate(() => {
         const title = document.querySelector('h1#main-title')
         const attributes = document.querySelector('.movie-info').querySelectorAll('dt')
-        const values = document.querySelector('.movie-info').querySelectorAll("dd:not([class='akas']):not([style])")
+        const values = document.querySelector('.movie-info').querySelectorAll("dd:not([class='akas'])")
         const average = document.querySelector('div#movie-rat-avg')
         const justwatch = document.querySelector("#stream-wrapper .body")
         const reviews = document.querySelectorAll('#pro-reviews > li > div')
@@ -42,6 +42,7 @@ async function metadataFilm(id, lang) {
                 cast: ['reparto', 'cast'],
                 producer: ['productora', 'producer'],
                 genre: ['genero', 'genre'],
+                groups: ['grupos', 'movie groups'],
                 synopsis: ['sinopsis', 'synopsis'],
             }
         
@@ -85,7 +86,7 @@ async function metadataFilm(id, lang) {
             }
         }
 
-        response['average'] = average.innerText
+        response['average'] = average != null ? average.innerText : ''
 
         response['justwatch'] = {flatrate: [], rent: [], buy: []}
         if (justwatch != undefined) {
@@ -101,6 +102,16 @@ async function metadataFilm(id, lang) {
                         })
                     }  
                 }
+            }
+        }
+
+        const transformInclination = (inclination) => {
+            if(inclination.includes('negativa') || inclination.includes('negative')) {
+                return 'negative'
+            } else if(inclination.includes('neutral')) {
+                return 'neutral'
+            } else {
+                return 'positive'
             }
         }
 
@@ -120,7 +131,7 @@ async function metadataFilm(id, lang) {
                     'reference': review.firstElementChild.href,
                     'body': body,
                     'author': review.lastElementChild.innerText.trim(),
-                    'inclination': review.lastElementChild.lastElementChild.attributes.alt.value
+                    'inclination': transformInclination(review.lastElementChild.lastElementChild.attributes.alt.value.toLowerCase())
                 })
             }
         }
