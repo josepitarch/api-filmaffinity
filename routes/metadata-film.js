@@ -23,7 +23,7 @@ async function metadataFilm(id, lang) {
 
     const film = await page.evaluate(() => {
         const title = document.querySelector('h1#main-title')
-        const attributes = document.querySelector('.movie-info').querySelectorAll('dt')
+        const attributes = document.querySelector('.movie-info').querySelectorAll("dt:not([class='akas'])")
         const values = document.querySelector('.movie-info').querySelectorAll("dd:not([class='akas'])")
         const average = document.querySelector('div#movie-rat-avg')
         const justwatch = document.querySelector("#stream-wrapper .body")
@@ -50,8 +50,7 @@ async function metadataFilm(id, lang) {
                 if(translates[key].find(e => e === attribute)) {
                   return key
                 }
-              }
-        
+            }
         }
 
         const translateSubtitle = (subtitle) => {
@@ -117,10 +116,7 @@ async function metadataFilm(id, lang) {
 
         response['reviews'] = []
         if (reviews != undefined) {
-            let aux = []
-            
             for (review of reviews) {
-
                 if (review.firstElementChild.localName === 'div') {
                     body = review.firstElementChild.innerText
                 } else {
@@ -135,6 +131,8 @@ async function metadataFilm(id, lang) {
                 })
             }
         }
+
+        response['title'] = title.innerText
   
         return response
     });
