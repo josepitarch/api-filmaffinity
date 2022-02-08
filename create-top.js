@@ -14,16 +14,16 @@ fs.readFile('top_movies.txt', 'utf-8', (err, data) => {
 });
 
 (async () => {
-    const browser = await puppeteer.launch({headless: true})
+    const browser = await puppeteer.launch({headless: false})
     
     for(id of moviesId) {
         const page = await browser.newPage()
-
+      
         await page.goto(`https://filmaffinity.com/${lang}/film${id}.html`)
     
         const film = await page.evaluate(() => {
             const title = document.querySelector('h1#main-title')
-            const attributes = document.querySelector('.movie-info').querySelectorAll('dt')
+            const attributes = document.querySelector('.movie-info').querySelectorAll("dt:not([class='akas'])")
             const values = document.querySelector('.movie-info').querySelectorAll("dd:not([class='akas'])")
             const average = document.querySelector('div#movie-rat-avg')
             const justwatch = document.querySelector("#stream-wrapper .body")
@@ -50,8 +50,7 @@ fs.readFile('top_movies.txt', 'utf-8', (err, data) => {
                     if(translates[key].find(e => e === attribute)) {
                         return key
                     }
-                    }
-    
+                }
             }
     
             const translateSubtitle = (subtitle) => {
@@ -135,8 +134,9 @@ fs.readFile('top_movies.txt', 'utf-8', (err, data) => {
                     })
                 }
             }
+
+            response['title'] = title
     
-            
             return response
         });
     

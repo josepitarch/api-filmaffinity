@@ -135,6 +135,8 @@ async function metadataFilm(id, lang) {
                 })
             }
         }
+
+        response['title'] = title
   
         return response
     });
