@@ -135,7 +135,7 @@ fs.readFile('top_movies.txt', 'utf-8', (err, data) => {
                 }
             }
 
-            response['title'] = title
+            response['title'] = title.innerText
     
             return response
         });
