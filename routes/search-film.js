@@ -47,7 +47,7 @@ router.get('/', async function(req, res) {
         await browser.close()
 
         if(typeof(search) === 'string') {
-            search = await metadataFilm(search, lang)
+            search = [await metadataFilm(search, lang)]
         }
 
         res.json(search)
