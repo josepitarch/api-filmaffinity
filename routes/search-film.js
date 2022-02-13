@@ -27,7 +27,7 @@ router.get('/', async function(req, res) {
                 response.push({
                     'id': film.dataset.movieId,
                     'title': poster['title'],
-                    'poster': poster.firstElementChild.src,
+                    'poster': poster.firstElementChild.dataset.src.replace('msmall', 'mmed'),
                     'reference': poster["href"],
                     'year': years[i].innerText,
                     'country': container.firstElementChild.lastElementChild['alt'],
