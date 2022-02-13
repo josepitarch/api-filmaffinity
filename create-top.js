@@ -25,6 +25,7 @@ fs.readFile('top_movies.txt', 'utf-8', (err, data) => {
             const title = document.querySelector('h1#main-title')
             const attributes = document.querySelector('.movie-info').querySelectorAll("dt:not([class='akas'])")
             const values = document.querySelector('.movie-info').querySelectorAll("dd:not([class='akas'])")
+            const poster = document.querySelector('#movie-main-image-container > a > img')
             const average = document.querySelector('div#movie-rat-avg')
             const justwatch = document.querySelector("#stream-wrapper .body")
             const reviews = document.querySelectorAll('#pro-reviews > li > div')
@@ -85,6 +86,7 @@ fs.readFile('top_movies.txt', 'utf-8', (err, data) => {
                 }
             }
     
+            response['poster'] = poster.src
             response['average'] = average != null ? average.innerText : ''
     
             response['justwatch'] = {flatrate: [], rent: [], buy: []}
